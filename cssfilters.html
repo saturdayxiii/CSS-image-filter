@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    color: white;
+    background-color: rgba(40,40,40,1);
+  }
+  .container {
+    text-align: center;
+    margin: 50px;
+  }
+  #image-container {
+    position: relative;
+    display: inline-block;
+  }
+  #image {
+    max-width: 100%;
+    height: auto;
+    border: 8px solid black;
+    filter: none; /* Initial state */
+    transform: none;
+  }
+  #filter-options {
+    position: relative;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  /* Wrap potentially overflowing text in the CSS code block */
+  #css-code {
+    white-space: pre-wrap;
+  }
+  .filter-option {
+    display: inline-block;
+    margin: 10px;
+  }
+/* Adjust the width of the sliders */
+  input[type="range"] {
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- Image loading section -->
+  <div id="image-loading">
+    <label for="image-url">Enter Image location relatve to this html file, or a URL:</label>
+    <input type="text" id="image-url" placeholder="images/pic.jpg">
+    <button id="load-button">Load</button>
+  </div>
+  <br>
+  <div id="filter-options">
+    <div class="filter-option">
+      <label for="zoom">Zoom:</label>
+      <input type="range" id="zoom" min="10" max="150" value="100">
+      <span id="zoom-value">100</span> %
+    </div>
+  <!-- Image display section -->
+  <div id="image-container">
+    <img id="image" src="images/pic.jpg" alt="Image">
+  </div>
+    <br>
+    <div class="filter-option">
+        <label for="rotation">Rotation:</label>
+        <input type="range" id="rotation" min="0" max="360" value="0">
+        <span id="rotation-value">0</span> degrees
+    </div>
+    <br>
+    <div class="filter-option">
+      <label for="brightness">Brightness:</label>
+      <input type="text" id="brightness" value="100">
+    </div>
+    <div class="filter-option">
+      <label for="contrast">Contrast:</label>
+      <input type="text" id="contrast" value="100">
+    </div>
+    <br>
+    <div class="filter-option">
+      <label for="hue">hue-rotate:</label>
+      <input type="range" id="hue" min="0" max="360" value="0">
+      <span id="hue-value">0</span> degrees
+    </div>
+    <br>
+    <div class="filter-option">
+      <label for="saturate">Saturate:</label>
+      <input type="text" id="saturate" value="100">
+    </div>
+    <div class="filter-option">
+      <label for="invert">Invert:</label>
+      <input type="text" id="invert" value="0">
+    </div>
+    <div class="filter-option">
+      <label for="blur">Blur:</label>
+      <input type="text" id="blur" value="0">
+    </div>
+    <br>
+    <button id="apply-button">Apply</button>
+    <button id="revert-button">Revert</button>
+  </div>
+  <pre id="css-code" style="border: 2px solid black; padding: 4px;">
+/* CSS code will be displayed here */
+  </pre>
+</div>
+
+<script>
+  const imageUrlInput = document.getElementById('image-url');
+  const loadButton = document.getElementById('load-button');
+  const image = document.getElementById('image');
+  const zoomInput = document.getElementById('zoom');
+  const zoomValueSpan = document.getElementById('zoom-value');
+  const rotationInput = document.getElementById('rotation');
+  const rotationValueSpan = document.getElementById('rotation-value');
+  const hueInput = document.getElementById('hue');
+  const hueValueSpan = document.getElementById('hue-value');
+  const applyButton = document.getElementById('apply-button');
+  const revertButton = document.getElementById('revert-button');
+  const cssCodeBlock = document.getElementById('css-code');
+
+  loadButton.addEventListener('click', loadNewImage);
+  zoomInput.addEventListener('input', updateZoomValue);
+  rotationInput.addEventListener('input', updateRotationValue);
+  applyButton.addEventListener('click', applyFilters);
+  revertButton.addEventListener('click', revertFilters);
+  hueInput.addEventListener('input', updateHueValue);
+
+  function loadNewImage() {
+    const imageUrl = imageUrlInput.value;
+    image.src = imageUrl;
+  }
+
+  function applyFilters() {
+    const zoomValue = zoomInput.value;
+    const rotationValue = rotationInput.value;
+    const brightnessValue = document.getElementById('brightness').value;
+    const contrastValue = document.getElementById('contrast').value;
+    const hueValue = hueInput.value;
+    const saturateValue = document.getElementById('saturate').value;
+    const invertValue = document.getElementById('invert').value;
+    const blurValue = document.getElementById('blur').value;
+
+    // Add more filter values here
+
+    const filters = `brightness(${brightnessValue}%) contrast(${contrastValue}%) hue-rotate(${hueValue}deg) saturate(${saturateValue}%) invert(${invertValue}%) blur(${blurValue}px)`;
+    const transform = `rotate(${rotationValue}deg)`;
+
+    image.style.filter = filters;
+    image.style.transform = transform;
+    image.style.maxWidth = `${zoomValue}%`;
+
+    const cssCode = `#image {
+  filter: ${filters};
+  transform: ${transform};
+  max-width: ${zoomValue}%;
+  }
+
+  - OR put this inside your <img> tag -
+
+  style="filter: ${filters}; transform: ${transform}; max-width: ${zoomValue}%;"`;
+    cssCodeBlock.textContent = cssCode;
+  }
+
+  function revertFilters() {
+  image.style.filter = `none`;
+  }
+
+  function updateRotationValue() {
+    const rotationValue = rotationInput.value;
+    rotationValueSpan.textContent = `${rotationValue}`;
+    applyFilters();
+  }
+
+  function updateZoomValue() {
+    const zoomValue = zoomInput.value;
+    zoomValueSpan.textContent = `${zoomValue}`;
+    applyFilters();
+  }
+
+  function updateHueValue() {
+    const hueValue = hueInput.value;
+    hueValueSpan.textContent = `${hueValue}`;
+    applyFilters();
+  }
+</script>
+</body>
+</html>
