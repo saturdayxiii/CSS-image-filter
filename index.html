@@ -18,7 +18,7 @@
     display: inline-block;
   }
   #image {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     border: 8px solid black;
     filter: none; /* Initial state */
@@ -150,17 +150,17 @@
 
     image.style.filter = filters;
     image.style.transform = transform;
-    image.style.maxWidth = `${zoomValue}%`;
+    image.style.width = `${zoomValue}%`;
 
     const cssCode = `#image {
   filter: ${filters};
   transform: ${transform};
-  max-width: ${zoomValue}%;
+  width: ${zoomValue}%;
   }
 
   - OR put this inside your <img> tag -
 
-  style="filter: ${filters}; transform: ${transform}; max-width: ${zoomValue}%;"`;
+  style="filter: ${filters}; transform: ${transform}; width: ${zoomValue}%;"`;
     cssCodeBlock.textContent = cssCode;
   }
 
