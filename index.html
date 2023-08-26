@@ -87,12 +87,12 @@
     </div>
     <br>
     <div class="filter-option">
-      <label for="saturate">Saturate:</label>
-      <input type="text" id="saturate" value="100">
+      <label for="invert">Invert:</label>
+      <input type="checkbox" id="invert">
     </div>
     <div class="filter-option">
-      <label for="invert">Invert:</label>
-      <input type="text" id="invert" value="0">
+      <label for="saturate">Saturate:</label>
+      <input type="text" id="saturate" value="100">
     </div>
     <div class="filter-option">
       <label for="blur">Blur:</label>
@@ -139,8 +139,9 @@
     const brightnessValue = document.getElementById('brightness').value;
     const contrastValue = document.getElementById('contrast').value;
     const hueValue = hueInput.value;
+    const invertCheckbox = document.getElementById('invert');
+    const invertValue = invertCheckbox.checked ? 100 : 0;
     const saturateValue = document.getElementById('saturate').value;
-    const invertValue = document.getElementById('invert').value;
     const blurValue = document.getElementById('blur').value;
 
     // Add more filter values here
